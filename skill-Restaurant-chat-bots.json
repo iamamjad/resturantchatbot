@@ -1,0 +1,449 @@
+{
+  "name": "Restaurant chat bots",
+  "intents": [
+    {
+      "intent": "location",
+      "examples": [
+        {
+          "text": "where is the store at?"
+        },
+        {
+          "text": "where is the store on  main street?"
+        },
+        {
+          "text": "where is the store on first street ?"
+        },
+        {
+          "text": "where you located ?"
+        },
+        {
+          "text": "what's the address ?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "book_table",
+      "examples": [
+        {
+          "text": "i want to book a table"
+        }
+      ],
+      "description": "user want to make a reservation"
+    },
+    {
+      "intent": "hours_of_operation",
+      "examples": [
+        {
+          "text": "what time the restaurant open and closed"
+        },
+        {
+          "text": "when is the store available"
+        },
+        {
+          "text": "when can i come in"
+        },
+        {
+          "text": "what are the hours"
+        },
+        {
+          "text": "what do you close"
+        },
+        {
+          "text": "what time do you open"
+        }
+      ],
+      "description": "What time the restaurant opens and closes"
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sys-number",
+      "values": []
+    },
+    {
+      "entity": "sys-time",
+      "values": []
+    },
+    {
+      "entity": "locations",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "First Street",
+          "synonyms": [
+            "First",
+            "1st"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Main Street",
+          "synonyms": [
+            "Main"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-date",
+      "values": []
+    }
+  ],
+  "language": "en",
+  "metadata": {
+    "api_version": {
+      "major_version": "v1",
+      "minor_version": "2018-09-20"
+    }
+  },
+  "description": "",
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "How many people are in you party?"
+      },
+      "parent": "slot_19_1562731561479",
+      "event_name": "focus",
+      "dialog_node": "handler_21_1562731561479",
+      "previous_sibling": "handler_20_1562731561479"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_19_1562731561479",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_20_1562731561479"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "What time did you want to arrived ?"
+      },
+      "parent": "slot_16_1562731531019",
+      "metadata": {},
+      "event_name": "focus",
+      "dialog_node": "handler_18_1562731531019",
+      "previous_sibling": "handler_17_1562731531019"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_16_1562731531019",
+      "context": {
+        "time": "@sys-time"
+      },
+      "conditions": "@sys-time",
+      "event_name": "input",
+      "dialog_node": "handler_17_1562731531019"
+    },
+    {
+      "type": "slot",
+      "parent": "node_8_1562731357893",
+      "variable": "$number",
+      "dialog_node": "slot_19_1562731561479",
+      "previous_sibling": "slot_16_1562731531019"
+    },
+    {
+      "type": "slot",
+      "parent": "node_8_1562731357893",
+      "variable": "$time",
+      "dialog_node": "slot_16_1562731531019",
+      "previous_sibling": "slot_13_1562731495491"
+    },
+    {
+      "type": "slot",
+      "parent": "node_8_1562731357893",
+      "variable": "$date",
+      "dialog_node": "slot_13_1562731495491",
+      "previous_sibling": "slot_10_1562731416150"
+    },
+    {
+      "type": "slot",
+      "parent": "node_8_1562731357893",
+      "variable": "$locations",
+      "dialog_node": "slot_10_1562731416150",
+      "previous_sibling": "handler_9_1562731416138"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "i need some more information to continue, i will need the location,date,time,and number of people"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_8_1562731357893",
+      "metadata": {},
+      "event_name": "focus",
+      "dialog_node": "handler_9_1562731416138"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "What date you want to come in?"
+      },
+      "parent": "slot_13_1562731495491",
+      "metadata": {},
+      "event_name": "focus",
+      "dialog_node": "handler_15_1562731495491",
+      "previous_sibling": "handler_14_1562731495491"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_13_1562731495491",
+      "context": {
+        "date": "@sys-date"
+      },
+      "conditions": "@sys-date",
+      "event_name": "input",
+      "dialog_node": "handler_14_1562731495491"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "The Main Street Store is at 456 Main"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "node_2_1562728565427",
+      "metadata": {},
+      "conditions": "@locations:(Main Street)",
+      "dialog_node": "node_4_1562729161159",
+      "previous_sibling": "node_3_1562728809031"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "The First Street location is 123 yanping road First"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1562728565427",
+      "metadata": {},
+      "conditions": "@locations:(First Street)",
+      "dialog_node": "node_3_1562728809031",
+      "previous_sibling": "node_7_1562731100038"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Which store did you looking for ? The one on First or the Main?"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "node_2_1562728565427",
+      "metadata": {},
+      "conditions": "true",
+      "dialog_node": "node_5_1562729957615",
+      "previous_sibling": "node_4_1562729161159"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "The First Street location is 123 yanping road First "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1562728565427",
+      "metadata": {},
+      "conditions": "@locations:(First Street)",
+      "dialog_node": "node_7_1562731100038",
+      "previous_sibling": "node_6_1562730054794"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "The Main street is location is 456 "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1562728565427",
+      "metadata": {},
+      "conditions": "@locations:(Main Street)",
+      "dialog_node": "node_6_1562730054794"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "Which store did you want to go to? First or Main?"
+      },
+      "parent": "slot_10_1562731416150",
+      "metadata": {},
+      "event_name": "focus",
+      "dialog_node": "handler_12_1562731416150",
+      "previous_sibling": "handler_11_1562731416150"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_10_1562731416150",
+      "context": {
+        "locations": "@locations"
+      },
+      "conditions": "@locations",
+      "event_name": "input",
+      "dialog_node": "handler_11_1562731416150"
+    },
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_8_1562731357893"
+    },
+    {
+      "type": "frame",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hmm ! Great i have table for $number of people on $date at $time on our $locations store"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {
+        "fallback": "leave"
+      },
+      "conditions": "#book_table",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_8_1562731357893",
+      "digress_out": "allow_all",
+      "previous_sibling": "node_2_1562728565427",
+      "digress_out_slots": "not_allowed"
+    },
+    {
+      "type": "standard",
+      "title": "Hours of Operation",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "we are open from 10am until 11pm."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "#hours_of_operation",
+      "dialog_node": "node_1_1562728295371",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "location",
+      "output": {},
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#location",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_2_1562728565427",
+      "digress_out": "allow_all",
+      "previous_sibling": "node_1_1562728295371"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. i can help you to make Reservation and give a basic info about our stored"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "workspace_id": "3fd9095f-cd56-4be0-b94c-24aec4e36ae3",
+  "counterexamples": [],
+  "system_settings": {
+    "tooling": {
+      "store_generic_responses": true
+    }
+  },
+  "learning_opt_out": false,
+  "status": "Available"
+}
